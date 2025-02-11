@@ -14,6 +14,16 @@
 
 // ici cest pcq si cest en fin de ligne et quil y a un saut a la ligne bah...cest pas le bon nom de fichier en gros..
 
+void freetab(char **tab, int alloc_lines)
+{
+    int i = 0;
+    while(tab[i])
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
+}
 
 bool all_inited(t_data *game)
 {

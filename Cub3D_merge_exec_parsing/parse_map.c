@@ -12,33 +12,7 @@
 
 #include "./cub.h"
 
-static int check_text(char *line, t_data *game)
-{
-    if (!line)
-        return (-1);
-    
-    char **tab = ft_split(line, ' ');
-    if (!tab)
-        return (-1);
-    if (tab[0] && tab[1])
-    {
-        if (ft_strncmp("NO", tab[0], 3) == 0)
-            game->map.n_text = give_ptr_img(less_n(tab[1]), game);
-        else if (ft_strncmp("SO", tab[0], 3) == 0)
-            game->map.s_text = give_ptr_img(less_n(tab[1]), game);
-        else if (ft_strncmp("EA", tab[0], 3) == 0)
-            game->map.e_text = give_ptr_img(less_n(tab[1]), game);
-        else if (ft_strncmp("WE", tab[0], 3) == 0)
-            game->map.w_text  = give_ptr_img(less_n(tab[1]), game);
-        else if (ft_strncmp("F", tab[0], 2) == 0)
-            game->map.f_col = (int)strtol(tab[1], NULL, 16); //a recoder ??
-        else if (ft_strncmp("C", tab[0], 2) == 0)
-            game->map.c_col = (int)strtol(tab[1], NULL, 16); // a recoder ??
-    }
-    return 0;
-}
-
-static int get_count(int fd)
+static int get_passed_lines(int fd)
 {
     char *ptr;
     int count = 0;
@@ -52,89 +26,69 @@ static int get_count(int fd)
 	return(count);
 }
 
-char letter_in_map(char *str)
+int check_and_make_map(t_data *game, int new_fd)
 {
-	int i = 0;
-	while(str[i])
-	{
-		if(str[i] != '0' && str[i] != '1')
-			return(str[i]);
-		i++;
-	}
-	return(0);
-}
-
-int get_map(int fd, char *tmp, t_data *game, int passed_lines)
-{
-    int count = 0;
-    int new_fd;
     int i = 0;
-
-	game->map.map = malloc(sizeof(char *) *  (get_count(fd) + 1));
-	new_fd = open(game->file_name, O_RDONLY);
-	while(passed_lines > 0)
-	{
-		get_next_line(new_fd);
-		passed_lines--;
-	}
-    while(1)
+    while(1) //on recupere les lignes
     {
-        game->map.map[i] = ft_strdup(get_next_line(new_fd));
+        game->map.map[i] = ft_strdup(get_next_line(new_fd)); //on les copies
         if(!game->map.map[i])
         {
             game->map.map[i] = NULL;
             break;
         }
-		game->joueur.dir = letter_in_map(game->map.map[i]);
+		if(is_dir(letter_in_line(game, i)) == true)
+        {
+            if(game->joueur.dir != 0)
+                return(printf("Error !\nJust one position and direction please..."), 1);
+            game->joueur.dir = letter_in_line(game, i); // ici on recupere la direction
+            game->joueur.y = i+1; // ici en partie la position
+        }
+		else if(is_map(game->joueur.dir) == false && is_dir(game->joueur.dir) == false)
+			return(printf("Error !\nWrong letter in map [%c]...\n", game->joueur.dir), 1);//freetab(game->map.map, i - 1), 1);
         i++;
     }
     return(0);
 }
 
-static int check_map_started(char *str)
-{
-    int i = 0;
-    if (!str)
-        return (-1);
-
-    while (str[i])
-    {
-        if (str[i] != '0' && str[i] != '1' && str[i] != 'N' && str[i] != 'S' && 
-            str[i] != 'E' && str[i] != 'W' && str[i] != ' ' && str[i] != '\n')
-            return (1);
-        i++;
-    }
-    return (0);
-}
-
-int fill_map(t_data *game, int fd)
+int get_map(int fd, char *tmp, t_data *game, int passed_lines)
 {
     int count = 0;
-    char *tmp = get_next_line(fd);
-    while (tmp)
-    {
-        count++;
-        if (check_map_started(tmp) != 0)
-        {
-            if (check_text(tmp, game))
-                break;
-        }
-        else
-            if(all_inited(game) == true)
-                return(get_map(fd, tmp, game, count));
-        tmp = get_next_line(fd);
-    }
-    return (1);
+    int map_size;
+    int new_fd;
+
+    map_size = get_passed_lines(fd);
+	game->map.map = malloc(sizeof(char *) *  (map_size + 1)); //avec le fd actuel on va aller a bout du fichier pour allouer 
+	new_fd = open(game->file_name, O_RDONLY); //ave le nouveau fd on va revenir sur les lignes deja passees pour aller a celles quon a pas copiees
+	while(passed_lines > 0) // ici on passe les lignes dont on a pas besoin...
+	{
+		get_next_line(new_fd);
+		passed_lines--;
+	}
+    if(check_and_make_map(game, new_fd) == 1)
+        return(1);
+    return(0);
 }
 
-int	parse_cub(int argc, char **argv, t_data *game)
+int catch_texture(int fd, t_data *game)
 {
-	int fd;
-	fd = parse_args(argc, argv, game);
-	game->file_name = ft_strdup(argv[1]);
-	if(fd < 0)
-		return(1);
-	if(fill_map(game, fd) != 0)
-		return(1);
-	return (0);
+	int count = 0;
+	int check = 0;
+    char *line = get_next_line(fd);
+    while (line)
+    {
+        count++;
+        if (parse_line(line) != 0) //checker si cest une ligne qui pourrait etre une ligne de texture
+        {
+            if(check_text(line, game) == -1) // si oui on va checker les textures
+				return(-1); // si probleme dans les textures retourner -1 si tableau vide ou autre
+        }
+        else
+        {
+            if(all_inited(game) == true && line_not_empty(line) == true) // si toutes les textures ont etees initiees
+                return(get_map(fd, line, game, count)); // on recupere la map
+        }
+        line = get_next_line(fd);
+    }
+    return (1);
 }

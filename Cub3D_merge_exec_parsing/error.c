@@ -17,3 +17,9 @@ void	deal_error(t_data *game, char *str)
 	ft_putstr_fd(str, 1);
 	free(game);
 }
+
+void	ft_error(t_data *game, char *str)
+{
+	write(1, str, (int)ft_strlen(str));
+	close_win(game);
+}

@@ -12,14 +12,12 @@
 
 #include "cub.h"
 
-
-
 // bah la jinit..(je suis une merguez en commentaires chais pas quoi mettre )  ʕノ•ᴥ•ʔノ ︵ ┻━┻
-void init_data(t_data *game, char **argv)
+void init_data(t_data *game)
 {
     game->joueur.x = 0;
     game->joueur.y = 0;
-    game->joueur.dir = 'N';
+    game->joueur.dir = 0;
     game->file_name = NULL;
 
     game->map.n_text = NULL;
@@ -28,6 +26,7 @@ void init_data(t_data *game, char **argv)
     game->map.w_text = NULL;
     game->map.f_col = -1;
     game->map.c_col = -1;
+
     game->map.map = NULL;
 
     game->img.image = NULL;

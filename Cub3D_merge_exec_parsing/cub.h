@@ -50,13 +50,15 @@ typedef struct s_map
 	void *s_text;
 	void *e_text;
 	void *w_text;
-	// char *n_text;
-	// char *s_text;
-	// char *e_text;
-	// char *w_text;
+	char *n_text_name;
+	char *s_text_name;
+	char *e_text_name;
+	char *w_text_name;
 	
 	int f_col;
 	int c_col;
+	char *f_col_name;
+	char *c_col_name;
 	char		**map;
 }				t_map;
 
@@ -92,10 +94,20 @@ int parse_cub(int argc, char **argv, t_data *game);
 void    draw_line(void *img, int x1, int y1, int x2, int y2, int color, t_data *data);
 char	*get_next_line(int fd);
 int parse_args(int argc, char **argv, t_data *game);
-void init_data(t_data *game, char **argv);
-void *give_ptr_img(char *img, t_data *game);
-int parse_args(int argc, char **argv, t_data *game);
+void init_data(t_data *game);
+int parsing(char *argv, t_data *game);
 char *less_n(char *str);
 int fill_map(t_data *game, int fd);
 bool all_inited(t_data *game);
+void	deal_error(t_data *game, char *str);
+int catch_texture(int fd, t_data *game);
+void freetab(char **tab, int alloc_lines);
+bool is_map(char c);
+bool is_dir(char c);
+void free_buffer(char **buffer);
+bool line_not_empty(char *str);
+int parse_line(char *str);
+int check_text(char *line, t_data *game);
+char letter_in_line(t_data *game, int index);
+void *give_ptr_img(char *img, t_data *game, char *code);
 #endif

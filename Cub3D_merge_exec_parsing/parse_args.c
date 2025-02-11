@@ -12,36 +12,62 @@
 
 #include "cub.h"
 
-static int	check_ext(char *str, char *ext)
+
+
+// checker lextention
+static int	check_cub(char *str)
 {
 	int	i;
-	int	j;
-
 	i = 0;
-	j = 0;
 	while (str[i++])
 		;
 	i -= 5;
 	if (i <= 0)
 		return (1);
-	while (str[i])
-	{
-		if (ext[j] != str[i])
-			return (1);
-		j++;
-		i++;
-	}
+	if(str[i] == '.' && str[i+1] == 'c' && str[i+2] == 'u' && str[i+3] == 'b' && str[i+4] == '\0')
+		return(0);
+	else
+		return(1);
 	return (0);
 }
 
-int parse_args(int argc, char **argv, t_data *game)
+// fonction qui va checker la validite du fichier
+int open_file(char *file_name, t_data *game)
 {
-	if(argc != 2)
-		return(ft_error(game, "Error !\nNot enought arguments...\n") ,1);
-	if(check_ext(argv[1], ".cub") == 0)
-	{
-		game->file_name = ft_strdup(argv[1]);
-		return(open(game->file_name, O_RDONLY));
-	}
+	if(check_cub(file_name) == 0 && (open(file_name, O_RDONLY) != -1))
+		game->file_name = file_name;
+	else
+		return(1);
 	return(0);
 }
+
+int check_game(t_data *game)
+{
+	if(all_inited(game) == false)
+		return(printf("check_game 1\n"), 1);
+		
+	if(game->joueur.dir == 0 || game->joueur.dir == -1)
+		return(printf("check_game 2\n"), 1);
+	return(0);
+}
+
+int parsing(char *argv, t_data *game)
+{
+	int fd;
+	if(argv[1])
+		init_data(game);
+	game->mlx_ptr = mlx_init();
+    if(!game->mlx_ptr)
+        return(deal_error(game, "error while mlx_init\n"), 1);
+	if(open_file(argv, game) == 1)
+		return(printf("Error !\nThe given file is not valid...\n"), 1);
+	fd = open(game->file_name, O_RDONLY);
+	if(catch_texture(fd, game) == 1)
+		return(1);
+	if(check_game(game) == 1)
+		return(1);
+	return(0);
+}
+
+
+
