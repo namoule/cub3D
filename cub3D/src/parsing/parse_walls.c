@@ -6,68 +6,84 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:22:07 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 19:23:00 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/12 21:57:17 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub.h"
 
+bool player_stuck(char **map, int y, int x)
+{
+    if (map[y + 1] == NULL || map[y][x] == '0' || map[y][x] == '0')
+        return (true);
+    if (map[y][x + 1] == '1' && map[y][x - 1] == '1' && map[y + 1][x] == '1' && map[y - 1][x] == '1')
+        return (true);
+    return (false);
+}
+static bool not_ins_map(char c)
+{
+    if (c == ' ' || c == '\0' || c == '\t' || c == '\n')
+        return (true);
+    return (false);
+}
 
-//check les char aux alentours pour savoir si il y a une sortie collee
 static bool check_char(char **map, int y, int x)
 {
-    if(map[y+1] == NULL && (map[y][x] == '0' || is_dir(map[y][x])))
-        return(printf("AAAAAA\n"),false);
-    if(!map[y][x-1] || map[y][x-1] == ' ' || map[y][x-1] == '\0')
-        return(printf("a\n"), false);
-    if(map[y][x+1] == '\0' ||!map[y][x+1] || map[y][x+1] == ' ')
-        return(printf("b\n"), false);
-    if(map[y-1][x] == '\0' || map[y-1][x] == ' ' || map[y-1][x] == '\0')
-        return(printf("c\n"), false);
-    if(map[y+1][x] == ' ' || map[y+1][x] == '\0')
-        return(printf("d\n"), false);
-    return(true);
+    map[y][x] = 'v';
+    if (map[y + 1] == NULL || x == 0 || y == 0)
+        return (false);
+    if (not_ins_map(map[y][x + 1]) == true || is_dir(map[y][x + 1]) == true)
+        return (false);
+    if (not_ins_map(map[y][x - 1]) == true || is_dir(map[y][x - 1]) == true)
+        return (false);
+    if (not_ins_map(map[y + 1][x]) == true || is_dir(map[y + 1][x]) == true)
+        return (false);
+    if (not_ins_map(map[y - 1][x]) == true || is_dir(map[y - 1][x]) == true)
+        return (false);
+    if (map[y][x + 1] == '0' || is_dir(map[y][x + 1]) == true)
+        if (check_char(map, y, x + 1) == false)
+            return (false);
+    if (map[y][x - 1] == '0' || is_dir(map[y][x - 1]) == true)
+        if (check_char(map, y, x - 1) == false)
+            return (false);
+    if (map[y + 1][x] == '0' || is_dir(map[y + 1][x]) == true)
+        if (check_char(map, y + 1, x) == false)
+            return (false);
+    if (map[y - 1][x] == '0' || is_dir(map[y - 1][x]) == true)
+        if (check_char(map, y - 1, x) == false)
+            return (false);
+    return (true);
 }
 
-static bool check_zero(char **map, int y, int x)
+static bool check_char_around(char **map, int y, int x)
 {
-    if(map[y][x] == '0')
-        map[y][x] = 'v';
-    if(check_char(map, y, x) == false)
-        return(printf("1"), false);
-    if(map[y][x-1] == '0' || is_dir(map[y][x-1]) == true)
-        if(check_zero(map, y, x-1) == false)
-            return(printf("2"), false);
-    if(map[y][x+1] == '0' || is_dir(map[y][x+1]) == true)
-        if(check_zero(map, y, x+1) == false)
-            return(printf("3"), false);
-    if(y != 0 && map[y-1][x] == '0' || is_dir(map[y-1][x]) == true)
-        if(check_zero(map, y-1, x) == false)
-            return(printf("4"), false);
-    if(map[y+1] && map[y+1][x] == '0' || is_dir(map[y-1][x]) == true)
-        if(check_zero(map, y+1, x) == false)
-            return(printf("5"), false);
-    return(true);
+    if (check_char(map, y, x) == false)
+        return (printf("map not ok !!\n"), false);
+    return (true);
 }
 
-bool wall_map(char **map)
+bool wall_map(char **map, t_data *game)
 {
-    int x = 0;
     int y = 0;
+    int x = 0;
 
-    while(map[y])
+    while (map[y])
     {
-        while(map[y][x])
+        while (map[y][x])
         {
-            if(map[y][x] == '0' || is_dir(map[y][x]) == true)
+            if (is_dir(map[y][x]) == true)
             {
-                if(check_zero(map, y, x) == false)
-                    return(printf("\nthe map is not closed line [%d] soit [%s]..\n", y, map[y]), false);
+                game->joueur.x = x;
+                game->joueur.y = y;
+                game->joueur.dir = map[y][x];
+                if (player_stuck(map, y, x) == true)
+                    return (printf("Error !\nThe player is stuck...\n"), false);
+                return (check_char_around(map, y, x));
             }
             x++;
         }
         x = 0;
         y++;
     }
-    return(true);
+    return (printf("Error !\nNo player found..\n"), false);
 }

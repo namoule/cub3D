@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:49:30 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 18:22:26 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/12 22:43:52 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,9 @@ typedef struct s_map
 	char *e_text_name;
 	char *w_text_name;
 	
-	int f_col;
-	int c_col;
-	char *f_col_name;
-	char *c_col_name;
+	char *f_col;
+	char *c_col;
+
 	char		**map;
 }				t_map;
 
@@ -110,5 +109,6 @@ int parse_line(char *str);
 int check_text(char *line, t_data *game);
 char letter_in_line(t_data *game, int index);
 void *give_ptr_img(char *img, t_data *game, char *code);
-bool wall_map(char **map);
+bool wall_map(char **map, t_data *game);
+char *give_rgb(char *rgb_char);
 #endif

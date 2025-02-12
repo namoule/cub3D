@@ -16,6 +16,24 @@ int parse_line(char *str)
     return (0);
 }
 
+int check_text_bis(t_data *game, char **tab)
+{
+    if (ft_strncmp("F", tab[0], 2) == 0)
+    {
+        game->map.f_col = give_rgb(tab[1]);
+        if(game->map.f_col == NULL)
+            return(-1);
+
+    }
+    else if (ft_strncmp("C", tab[0], 2) == 0)
+    {
+        game->map.c_col = give_rgb(tab[1]);
+        if(game->map.c_col == NULL)
+            return(-1);
+    }
+    return(0);
+}
+
 int check_text(char *line, t_data *game)
 {
     if (!line)
@@ -34,10 +52,8 @@ int check_text(char *line, t_data *game)
             return(game->map.e_text = give_ptr_img(less_n(tab[1]), game, "EA"), 0);
         else if (ft_strncmp("WE", tab[0], 3) == 0)
             return(game->map.w_text  = give_ptr_img(less_n(tab[1]), game, "WE"), 0);
-        else if (ft_strncmp("F", tab[0], 2) == 0)
-            return(game->map.f_col = (int)strtol(tab[1], NULL, 16), 0); //a recoder ??
-        else if (ft_strncmp("C", tab[0], 2) == 0)
-            return(game->map.c_col = (int)strtol(tab[1], NULL, 16), 0); // a recoder ??
+        else if(ft_strncmp("F", tab[0], 2) == 0 || ft_strncmp("C", tab[0], 2) == 0)
+            return(check_text_bis(game, tab));
     }
     return 1;
 }

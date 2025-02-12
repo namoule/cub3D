@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:01:10 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 18:50:10 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/12 23:17:37 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int check_and_make_map(t_data *game, int new_fd)
             game->map.map[i] = NULL;
             break;
         }
-		if(is_dir(letter_in_line(game, i)) == true)
-        {
-            if(game->joueur.dir != 0)
-                return(printf("Error !\nJust one position and direction please..."), 1);
-            game->joueur.dir = letter_in_line(game, i); // ici on recupere la direction
-            game->joueur.y = i+1; // ici en partie la position
-        }
-		else if(is_map(game->joueur.dir) == false && is_dir(game->joueur.dir) == false)
+		// if(is_dir(letter_in_line(game, i)) == true)
+        // {
+        //     if(game->joueur.dir != 0)
+        //         return(printf("Error !\nJust one position and direction please..."), 1);
+        //     game->joueur.dir = letter_in_line(game, i); // ici on recupere la direction
+        //     game->joueur.y = i+1; // ici en partie la position
+        // }
+		if(is_map(game->joueur.dir) == false && is_dir(game->joueur.dir) == false)
 			return(printf("Error !\nWrong letter in map [%c]...\n", game->joueur.dir), 1);//freetab(game->map.map, i - 1), 1);
         i++;
     }
@@ -81,7 +81,7 @@ int catch_texture(int fd, t_data *game)
         if (parse_line(line) != 0) //checker si cest une ligne qui pourrait etre une ligne de texture
         {
             if(check_text(line, game) == -1) // si oui on va checker les textures
-				return(-1); // si probleme dans les textures retourner -1 si tableau vide ou autre
+				return(1); // si probleme dans les textures retourner -1 si tableau vide ou autre
         }
         else
         {

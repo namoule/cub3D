@@ -6,20 +6,20 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:00:22 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 17:12:31 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/12 21:57:32 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../../cub.h"
+#include "../../cub.h"
 
-void	draw_line(void *img, int x1, int y1, int x2, int y2, int color,
-		t_data *data)
+void draw_line(void *img, int x1, int y1, int x2, int y2, int color,
+			   t_data *data)
 {
-	int		i;
-	int		steps;
-	float	x;
-	float	y;
-	float	x_inc;
+	int i;
+	int steps;
+	float x;
+	float y;
+	float x_inc;
 
 	i = 0;
 	steps = 0;

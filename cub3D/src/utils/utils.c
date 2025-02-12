@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 22:46:12 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 17:23:08 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/12 22:57:26 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ bool all_inited(t_data *game)
         return (false);
     if (!game->map.w_text)
         return (false);
-    if (game->map.c_col < 0)
+    if (game->map.c_col == NULL)
         return (false);
-    if (game->map.f_col < 0)
+    if (game->map.f_col == NULL)
         return (false);
     return (true);
 }

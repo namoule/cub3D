@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:27:04 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 17:12:31 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/12 23:12:25 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,14 @@ int main(int argc, char **argv)
 {
     t_data game;
     
-    if(parsing(argv[1], &game) == 1)
+    if(argc != 2 || parsing(argv[1], &game) == 1)
         return(1);
     printf("dir = %c\n", game.joueur.dir);
     printf("x = %d\n", game.joueur.x);
     printf("y = %d\n\n", game.joueur.y);
+    printf("c col %s\n", game.map.c_col);
+    printf("f col %s\n", game.map.f_col);
+    
 
     int i = 0;
     while(game.map.map[i])

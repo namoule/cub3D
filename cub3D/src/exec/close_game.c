@@ -6,13 +6,13 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:03:40 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 17:11:16 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/12 21:57:29 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub.h"
 
-int	close_win(t_data *game)
+int close_win(t_data *game)
 {
 	if (game->window)
 		mlx_destroy_window(game->mlx_ptr, game->window);
