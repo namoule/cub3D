@@ -6,13 +6,11 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 22:26:22 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 23:17:43 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:29:51 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub.h"
-
-
 
 // checker lextention
 static int	check_cub(char *str)
@@ -69,6 +67,3 @@ int parsing(char *argv, t_data *game)
 		return(1);
 	return(0);
 }
-
-
-

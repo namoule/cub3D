@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 08:37:39 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/10 19:36:20 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:30:59 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,13 @@ char **ft_split(char const *s, char c)
 
     if (!s)
         return NULL;
-
     tab = (char **)malloc(sizeof(char *) * ((ft_countword(s, c)) + 1));
     if (!tab)
         return NULL;
-
     while (s[i])
     {
         while (s[i] == c)
             i++;
-
         j = i;
         while (s[i] && s[i] != c)
             i++;

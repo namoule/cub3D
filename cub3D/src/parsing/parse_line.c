@@ -22,16 +22,16 @@ int check_text_bis(t_data *game, char **tab)
     {
         game->map.f_col = give_rgb(tab[1]);
         if(game->map.f_col == NULL)
-            return(-1);
+            return(freetab(tab), -1);
 
     }
     else if (ft_strncmp("C", tab[0], 2) == 0)
     {
         game->map.c_col = give_rgb(tab[1]);
         if(game->map.c_col == NULL)
-            return(-1);
+            return(freetab(tab), -1);
     }
-    return(0);
+    return(freetab(tab), 0);
 }
 
 int check_text(char *line, t_data *game)
@@ -40,22 +40,25 @@ int check_text(char *line, t_data *game)
         return (-1);
     
     char **tab = ft_split(line, ' ');
+    char *tmp = NULL;
     if (!tab)
         return (-1);
     if (tab[0] && tab[1])
     {
+        tmp = less_n(tab[1]);
         if (ft_strncmp("NO", tab[0], 3) == 0)
-            return(game->map.n_text = give_ptr_img(less_n(tab[1]), game, "NO"), 0);
+            return( game->map.n_text = give_ptr_img(tmp, game, "NO"), freetab(tab), free(tmp), 0);
         else if (ft_strncmp("SO", tab[0], 3) == 0)
-            return(game->map.s_text = give_ptr_img(less_n(tab[1]), game, "SO"), 0);
+            return( game->map.s_text = give_ptr_img(tmp, game, "SO"), freetab(tab), free(tmp), 0);
         else if (ft_strncmp("EA", tab[0], 3) == 0)
-            return(game->map.e_text = give_ptr_img(less_n(tab[1]), game, "EA"), 0);
+            return( game->map.e_text = give_ptr_img(tmp, game, "EA"), freetab(tab), free(tmp), 0);
         else if (ft_strncmp("WE", tab[0], 3) == 0)
-            return(game->map.w_text  = give_ptr_img(less_n(tab[1]), game, "WE"), 0);
+            return( game->map.w_text  = give_ptr_img(tmp, game, "WE"), freetab(tab), free(tmp), 0);
         else if(ft_strncmp("F", tab[0], 2) == 0 || ft_strncmp("C", tab[0], 2) == 0)
-            return(check_text_bis(game, tab));
+            return(free(tmp), check_text_bis(game, tab));
+        free(tmp);   
     }
-    return 1;
+    return(freetab(tab), 1);
 }
 
 char letter_in_line(t_data *game, int index)

@@ -6,13 +6,11 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 22:02:06 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 23:13:11 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:24:37 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub.h"
-
-
 
 static char *puthex(int nb)
 {
@@ -66,6 +64,10 @@ char *give_rgb(char *rgb_char)
     hex_value[3] = green[1];
     hex_value[4] = blue[0];
     hex_value[5] = blue[1];
+    free(red);
+    free(green);
+    free(blue);
+    freetab(tab);
     if(!hex_value)
         return(printf("Error while strjoin..,\n"), NULL);
     return(hex_value);

@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 22:46:12 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 22:57:26 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:25:10 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // ici cest pcq si cest en fin de ligne et quil y a un saut a la ligne bah...cest pas le bon nom de fichier en gros..
 
-void freetab(char **tab, int alloc_lines)
+void freetab(char **tab)
 {
     int i = 0;
     while(tab[i])

@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:49:30 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 22:43:52 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:35:01 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int fill_map(t_data *game, int fd);
 bool all_inited(t_data *game);
 void	deal_error(t_data *game, char *str);
 int catch_texture(int fd, t_data *game);
-void freetab(char **tab, int alloc_lines);
+void freetab(char **tab);
 bool is_map(char c);
 bool is_dir(char c);
 void free_buffer(char **buffer);
