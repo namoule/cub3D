@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 22:46:12 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/13 11:25:10 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:39:07 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@
 void freetab(char **tab)
 {
     int i = 0;
+    if(!tab[i])
+        return ;
     while(tab[i])
     {
-        free(tab[i]);
+        if(tab[i] != NULL)
+            free(tab[i]);
         i++;
     }
     free(tab);

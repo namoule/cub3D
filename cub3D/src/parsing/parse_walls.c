@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:22:07 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 21:57:17 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:09:39 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,24 @@ static bool not_ins_map(char c)
     return (false);
 }
 
+
+bool invalid_char(char **game, int y, int x)
+{
+    if(is_map(game[y+1][x]) == false && is_dir(game[y+1][x]) == false)
+        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y+1][x]), false);
+    else if(is_map(game[y-1][x]) == false && is_dir(game[y-1][x]) == false)
+        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y-1][x]), false);
+    else if(is_map(game[y][x+1]) == false && is_dir(game[y][x+1]) == false)
+        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y][x+1]), false);
+    else if(is_map(game[y][x-1]) == false && is_dir(game[y][x-1]) == false)
+        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y][x-1]), false);
+    return(true);
+}
+
 static bool check_char(char **map, int y, int x)
 {
     map[y][x] = 'v';
-    if (map[y + 1] == NULL || x == 0 || y == 0)
+    if (map[y + 1] == NULL || x == 0 || y == 0 || invalid_char(map, y, x) == false)
         return (false);
     if (not_ins_map(map[y][x + 1]) == true || is_dir(map[y][x + 1]) == true)
         return (false);
@@ -58,7 +72,7 @@ static bool check_char(char **map, int y, int x)
 static bool check_char_around(char **map, int y, int x)
 {
     if (check_char(map, y, x) == false)
-        return (printf("map not ok !!\n"), false);
+        return (false);
     return (true);
 }
 
@@ -78,9 +92,7 @@ bool wall_map(char **map, t_data *game)
                 game->joueur.dir = map[y][x];
                 if (player_stuck(map, y, x) == true)
                     return (printf("Error !\nThe player is stuck...\n"), false);
-                return (check_char_around(map, y, x));
-            }
-            x++;
+                return (check_char_around(map, y,
         }
         x = 0;
         y++;

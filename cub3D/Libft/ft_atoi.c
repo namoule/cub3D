@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:57:40 by jealefev          #+#    #+#             */
-/*   Updated: 2023/11/17 11:48:44 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:40:21 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	ft_atoi(const char *str)
 	i = 0;
 	nb = 0;
 	neg = 1;
+	if(!str)
+		return(-1);
 	while(str[i] == 32 || (str[i] <= 13 && str[i] >= 9))
 		i++;
 	if (str[i] == 45 || str[i] == 43)

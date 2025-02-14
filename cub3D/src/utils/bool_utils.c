@@ -17,7 +17,7 @@ bool is_map(char c)
 {
     if(c == '1' || c == '0' || c == ' ' || c == '\n' || c == '\0')
         return(true);
-    return(printf("r%cr\n", c), false);
+    return(false);
 }
 
 bool line_not_empty(char *str)

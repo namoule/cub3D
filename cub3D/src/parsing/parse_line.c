@@ -18,18 +18,18 @@ int parse_line(char *str)
 
 int check_text_bis(t_data *game, char **tab)
 {
-    if (ft_strncmp("F", tab[0], 2) == 0)
+    if (ft_strncmp("F", tab[0], 2) == 0 &&  game->map.f_col == NULL)
     {
         game->map.f_col = give_rgb(tab[1]);
         if(game->map.f_col == NULL)
-            return(freetab(tab), -1);
+            return(freetab(tab), free(game->map.map), -1);
 
     }
-    else if (ft_strncmp("C", tab[0], 2) == 0)
+    else if (ft_strncmp("C", tab[0], 2) == 0 && game->map.c_col == NULL)
     {
         game->map.c_col = give_rgb(tab[1]);
         if(game->map.c_col == NULL)
-            return(freetab(tab), -1);
+            return(freetab(tab), free(game->map.map), -1);
     }
     return(freetab(tab), 0);
 }
@@ -46,13 +46,13 @@ int check_text(char *line, t_data *game)
     if (tab[0] && tab[1])
     {
         tmp = less_n(tab[1]);
-        if (ft_strncmp("NO", tab[0], 3) == 0)
+        if (ft_strncmp("NO", tab[0], 3) == 0 && game->map.n_text == NULL)
             return( game->map.n_text = give_ptr_img(tmp, game, "NO"), freetab(tab), free(tmp), 0);
-        else if (ft_strncmp("SO", tab[0], 3) == 0)
+        else if (ft_strncmp("SO", tab[0], 3) == 0 && game->map.s_text == NULL)
             return( game->map.s_text = give_ptr_img(tmp, game, "SO"), freetab(tab), free(tmp), 0);
-        else if (ft_strncmp("EA", tab[0], 3) == 0)
+        else if (ft_strncmp("EA", tab[0], 3) == 0 && game->map.e_text == NULL)
             return( game->map.e_text = give_ptr_img(tmp, game, "EA"), freetab(tab), free(tmp), 0);
-        else if (ft_strncmp("WE", tab[0], 3) == 0)
+        else if (ft_strncmp("WE", tab[0], 3) == 0 && game->map.w_text == NULL)
             return( game->map.w_text  = give_ptr_img(tmp, game, "WE"), freetab(tab), free(tmp), 0);
         else if(ft_strncmp("F", tab[0], 2) == 0 || ft_strncmp("C", tab[0], 2) == 0)
             return(free(tmp), check_text_bis(game, tab));
@@ -79,7 +79,7 @@ char letter_in_line(t_data *game, int index)
 			return(game->map.map[index][i]);
         }
 		else if(is_map(game->map.map[index][i]) == false && game->map.map[index][i] != '\0')
-			return(game->map.map[index][i]);
+			return(printf("Error !\nWrong character in map...\n"), game->map.map[index][i]);
 		i++;
 	}
 	return(0);

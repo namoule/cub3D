@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 22:02:06 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/13 11:24:37 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:16:40 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ bool check_rgb(char **tab)
     int green = 0;
     int blue = 0;
     
+    red = ft_atoi(tab[0]);
+    green = ft_atoi(tab[1]);
+    blue = ft_atoi(tab[2]);
     if(red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255)
         return(printf("Error !\nFloor or ceiling color Invalid, send RGB pwease...\n"), false);
     return(true);
@@ -52,11 +55,13 @@ char *give_rgb(char *rgb_char)
     if(!rgb_char)
         return(NULL);
     tab = ft_split(rgb_char, ',');
-    if(check_rgb(tab) == false)
-        return(NULL); 
+    if(!tab[0] || !tab[1] || !tab[2]|| check_rgb(tab) == false)
+        return(freetab(tab), NULL); 
     red = puthex(ft_atoi(tab[0]));
     green = puthex(ft_atoi(tab[1]));
     blue = puthex(ft_atoi(tab[2]));
+    if(!red || !green || ! blue)
+        return(printf("Wrong colors..\n"), NULL);
     hex_value = malloc(sizeof(char) * 7);
     hex_value[0] = red[0];
     hex_value[1] = red[1];

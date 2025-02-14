@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:01:10 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/13 11:42:24 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 17:56:53 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,33 @@ static int get_passed_lines(int fd)
 	return(count);
 }
 
+void free_counted_lines(char **tab, int count)
+{
+    int i = 0;
+    printf("%d\n", 1);
+    while(i <= count)
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
+}
+
 int check_and_make_map(t_data *game, int new_fd)
 {
     int i = 0;
     char *tmp;
+    int count = 0;
     while(1) //on recupere les lignes
     {
         tmp = get_next_line(new_fd);
+
+        // if(!tmp)
+        // {
+        //     game->map.map[i] = NULL;
+        //     return(printf("Error !\nLine is empty [%s]...\n", tmp), 1);
+        // }
+        count++;
         game->map.map[i] = ft_strdup(tmp); //on les copies
         free(tmp);
         if(!game->map.map[i])
@@ -41,13 +61,6 @@ int check_and_make_map(t_data *game, int new_fd)
             game->map.map[i] = NULL;
             break;
         }
-		// if(is_dir(letter_in_line(game, i)) == true)
-        // {
-        //     if(game->joueur.dir != 0)
-        //         return(printf("Error !\nJust one position and direction please..."), 1);
-        //     game->joueur.dir = letter_in_line(game, i); // ici on recupere la direction
-        //     game->joueur.y = i+1; // ici en partie la position
-        // }
 		if(is_map(game->joueur.dir) == false && is_dir(game->joueur.dir) == false)
 			return(printf("Error !\nWrong letter in map [%c]...\n", game->joueur.dir), 1);
         i++;
@@ -85,7 +98,7 @@ int catch_texture(int fd, t_data *game)
         if (parse_line(line) != 0) //checker si cest une ligne qui pourrait etre une ligne de texture
         {
             if(check_text(line, game) == -1) // si oui on va checker les textures
-				return(1); // si probleme dans les textures retourner -1 si tableau vide ou autre
+				return(free(line), free(get_next_line(-42)), 1); // si probleme dans les textures retourner -1 si tableau vide ou autre
         }
         else
         {
@@ -95,5 +108,6 @@ int catch_texture(int fd, t_data *game)
         free(line);
         line = get_next_line(fd);
     }
+    free(line);
     return (1);
 }

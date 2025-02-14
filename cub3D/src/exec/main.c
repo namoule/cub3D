@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:27:04 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/13 10:36:36 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:17:50 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int main(int argc, char **argv)
     //     printf("%s\n", game.map.map[i]);
     //     i++;
     // }
+    printf("everything ok !\n");
     close_win(&game);
     return 0;
 }
