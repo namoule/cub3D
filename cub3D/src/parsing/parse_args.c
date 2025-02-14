@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 22:26:22 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/13 17:25:55 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:35:29 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,28 @@ int check_game(t_data *game)
 	return(0);
 }
 
+bool check_v(char **map)
+{
+	int y = 0;
+	int x = 0;
+	while(map[y])
+	{
+		while(map[y][x])
+		{
+			if(map[y][x] == 'v')
+				return(false);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+	return(true);
+}
+
 int parsing(char *argv, t_data *game)
 {
 	int fd;
+	int i = 0;
 	if(argv[1])
 		init_data(game);
 	game->mlx_ptr = mlx_init();
@@ -61,8 +80,10 @@ int parsing(char *argv, t_data *game)
 	fd = open(game->file_name, O_RDONLY);
 	if(catch_texture(fd, game) == 1)
 		return(printf("Error !\nMap invalid...\n"), 1);
+	if(check_v(game->map.map) == false)
+		return(printf("Error !\nWrong character in map...\n"), 1);
 	if(wall_map(game->map.map, game) == false)
-		return(1);
+		return(printf("wall map not ok\n"), 1);
 	if(check_game(game) == 1)
 		return(printf("Error !\nCheck game note ok...\n"), 1);
 	return(0);

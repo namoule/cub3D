@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:03:40 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/13 17:39:41 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/14 19:34:50 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int close_win(t_data *game)
 		mlx_destroy_window(game->mlx_ptr, game->window);
 	if (game->img.image)
 		mlx_destroy_image(game->mlx_ptr, game->img.image);
-	if (game->map.map)
+	if (game->map.map != NULL)
 		freetab(game->map.map);
 	if(game->map.n_text)
 		mlx_destroy_image(game->mlx_ptr, game->map.n_text);

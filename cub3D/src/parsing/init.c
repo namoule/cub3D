@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 18:01:34 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 22:44:02 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/14 19:31:19 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void init_data(t_data *game)
     game->map.w_text = NULL;
     game->map.f_col = NULL;
     game->map.c_col = NULL;
+    game->map.error = false;
 
     game->map.map = NULL;
 
