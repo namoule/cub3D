@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:22:07 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/14 19:35:16 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:47:18 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,16 @@
 
 bool player_stuck(char **map, int y, int x)
 {
-    if (map[y + 1] == NULL || map[y][x] == '0' || map[y][x] == '0')
-        return (true);
-    if (map[y][x + 1] == '1' && map[y][x - 1] == '1' && map[y + 1][x] == '1' && map[y - 1][x] == '1')
-        return (true);
-    return (false);
-}
-static bool not_ins_map(char c)
-{
-    if (c == ' ' || c == '\0' || c == '\t' || c == '\n')
-        return (true);
-    return (false);
-}
-
-bool invalid_char(char **game, int y, int x)
-{
-    if(is_map(game[y+1][x]) == false && is_dir(game[y+1][x]) == false && game[y+1][x] != 'v')
-        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y+1][x]), false);
-    else if(is_map(game[y-1][x]) == false && is_dir(game[y-1][x]) == false && game[y-1][x] != 'v')
-        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y-1][x]), false);
-    else if(is_map(game[y][x+1]) == false && is_dir(game[y][x+1]) == false && game[y][x+1] != 'v')
-        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y][x+1]), false);
-    else if(is_map(game[y][x-1]) == false && is_dir(game[y][x-1]) == false && game[y][x-1] != 'v')
-        return(printf("Error !\nWrong charracter in map %s %c\n", game[y], game[y][x-1]), false);
-    else
-        return(true);
+    if(map[y+1] == NULL && (map[y][x] == '0' || is_dir(map[y][x])))
+        return(printf("AAAAAA\n"),false);
+    if(!map[y][x-1] || map[y][x-1] == ' ' || map[y][x-1] == '\0')
+        return(printf("a\n"), false);
+    if(map[y][x+1] == '\0' ||!map[y][x+1] || map[y][x+1] == ' ')
+        return(printf("b\n"), false);
+    if(map[y-1][x] == '\0' || map[y-1][x] == ' ' || map[y-1][x] == '\0')
+        return(printf("c\n"), false);
+    if(map[y+1] && (map[y+1][x] == ' ' || map[y+1][x] == '\0'))
+        return(printf("d\n"), false);
     return(true);
 }
 

@@ -21,7 +21,7 @@ MLX_LIB		=	$(addprefix $(MLX_PATH), $(MLX_FILE))
 
 MLX_EX		=	$(MLX_LIB) $(MLX_FLAG)
 
-SRC_FILE	= exec/close_game.c exec/graphic.c exec/img.c exec/keys.c exec/main.c parsing/init.c parsing/parse_args.c parsing/parse_line.c parsing/parse_map.c parsing/parse_walls.c utils/bool_utils.c utils/error.c utils/get_next_line.c utils/gnl.c utils/utils.c parsing/rgb.c
+SRC_FILE	= exec/close_game.c exec/graphic.c exec/img.c exec/keys.c exec/main.c parsing/init.c parsing/parse_args.c parsing/parse_line.c parsing/parse_map.c parsing/parse_walls.c utils/bool_utils.c utils/error.c utils/get_next_line.c utils/gnl.c utils/utils.c parsing/get_map.c
 
 SRC_DIR = src/
 

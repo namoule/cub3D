@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 14:49:30 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/14 19:34:21 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:48:46 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int parse_line(char *str);
 int check_text(char *line, t_data *game);
 char letter_in_line(t_data *game, int index);
 void *give_ptr_img(char *img, t_data *game, char *code);
-bool wall_map(char **map, t_data *game);
-char *give_rgb(char *rgb_char);
-bool check_char(t_data *game, char **map, int y, int x);
+bool wall_map(char **map);
+bool check_tab(char **tab, t_data *game);
 #endif

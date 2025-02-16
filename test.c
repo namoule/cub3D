@@ -1,16 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_map.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 17:47:52 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/16 17:47:53 by jealefev         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../cub.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 bool check_around(char **tab, int y, int x, int count)
 {
@@ -72,12 +63,13 @@ bool check_char(char c)
     return (c == '1' || c == 'N' || c == 'E' || c == 'W' || c == 'S' || c == '0' || c == '\n' || c == '\0');
 }
 
-bool check_tab(char **tab, t_data *game)
+bool check_tab(char **tab)
 {
     int y = 0;
     int x = 0;
     bool last_line_non_empty = false;
     int count = 0;
+    char letter = 'a';
     while (tab[count])
         count++;
     while (tab[y])
@@ -86,10 +78,10 @@ bool check_tab(char **tab, t_data *game)
             return (printf("Erreur : ligne vide au milieu du tableau\n"), false);
         while (tab[y][x])
         {
-            if(is_dir(tab[y][x]) == true && game->joueur.dir != 0)
-                return(printf("already one game->joueur.dir %c\n", tab[y][x]), false);
-            else if(is_dir(tab[y][x]) == true && game->joueur.dir == 0)
-                game->joueur.dir = tab[y][x];
+            if(is_dir(tab[y][x]) == true && letter != 'a')
+                return(printf("already one letter %c\n", tab[y][x]), false);
+            else if(is_dir(tab[y][x]) == true && letter == 'a')
+                letter = tab[y][x];
             if (check_char(tab[y][x]) == false)
                 return (printf("Erreur : caractère invalide '%c' dans le tableau\n", tab[y][x]), false);
             else if (just_deal_line(tab, y, x, count) == false)
@@ -100,8 +92,25 @@ bool check_tab(char **tab, t_data *game)
         x = 0;
         y++;
     }
-    if(game->joueur.dir == 0)
+    if(letter == 'a')
         return(printf("Needs one player\n"), false);
-    return(true);
+    return true;
 }
 
+int main()
+{
+    char *tab[] = {
+        "11111111",
+        "11100001",
+        "10000001",
+        "100000001",
+        "11111111",
+        NULL
+    };
+
+    if (check_tab(tab) == false)
+        printf("Erreur de vérification de tableau\n");
+    else
+        printf("Vérification réussie\n");
+    return 0;
+}
