@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 17:47:52 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/16 17:47:53 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/16 18:19:55 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 bool check_around(char **tab, int y, int x, int count)
 {
+    if(tab[y-1][0] == '\0')
+        return (printf("U"), false);
     if (x + 1 < strlen(tab[y]) && (!tab[y][x + 1] || (tab[y][x + 1] == ' ') || tab[y][x + 1] == '\n' || tab[y][x + 1] == '\0'))
         return false;
     if (x - 1 >= 0 && (!tab[y][x] || (tab[y][x - 1] == ' ') || tab[y][x - 1] == '\n' || tab[y][x - 1] == '\0'))
@@ -61,13 +63,13 @@ bool just_deal_line(char **tab, int y, int x, int count)
 {
     if (y == 0 || y == count - 1 || x == 0 || x == strlen(tab[y]) - 1)
         if (tab[y][x] == '0')
-            return false;
+            return(printf("A"), false);
     if (is_map(tab[y][x]) == true && check_around(tab, y, x, count) == false)
-        return false;
+        return(printf("B"), false);
     return true;
 }
 
-bool check_char(char c)
+static bool check_char(char c)
 {
     return (c == '1' || c == 'N' || c == 'E' || c == 'W' || c == 'S' || c == '0' || c == '\n' || c == '\0');
 }

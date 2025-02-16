@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 22:26:22 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/14 18:35:29 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:51:29 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ int parsing(char *argv, t_data *game)
 	fd = open(game->file_name, O_RDONLY);
 	if(catch_texture(fd, game) == 1)
 		return(printf("Error !\nMap invalid...\n"), 1);
-	if(check_v(game->map.map) == false)
-		return(printf("Error !\nWrong character in map...\n"), 1);
-	if(wall_map(game->map.map, game) == false)
-		return(printf("wall map not ok\n"), 1);
 	if(check_game(game) == 1)
 		return(printf("Error !\nCheck game note ok...\n"), 1);
 	return(0);
