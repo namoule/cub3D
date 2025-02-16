@@ -1,94 +1,95 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_map.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 18:01:10 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 18:50:10 by jealefev         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../../cub.h"
 
-#include"../../cub.h"
-
-static int get_passed_lines(int fd)
+bool check_around(char **tab, int y, int x, int count)
 {
-    char *ptr;
+    if (x + 1 < strlen(tab[y]) && (!tab[y][x + 1] || (tab[y][x + 1] == ' ') || tab[y][x + 1] == '\n' || tab[y][x + 1] == '\0'))
+        return false;
+    if (x - 1 >= 0 && (!tab[y][x] || (tab[y][x - 1] == ' ') || tab[y][x - 1] == '\n' || tab[y][x - 1] == '\0'))
+        return false;
+    if (y - 1 >= 0 && (!tab[y][x] || (tab[y - 1][x] == ' ') || tab[y - 1][x] == '\n' || tab[y - 1][x] == '\0'))
+        return false;
+    if (y + 1 < count && (!tab[y][x] || (tab[y + 1][x] == ' ') || tab[y + 1][x] == '\n' || tab[y + 1][x] == '\0'))
+        return false;
+    return true;
+}
+
+bool check_empty_line(char *line)
+{
+    int x = 0;
+    while (line[x] != '\0')
+    {
+        if (line[x] != ' ' && line[x] != '\n')
+            return false;
+        x++;
+    }
+    if(x == 0)
+        return false;
+    return true;
+}
+
+bool is_dir(char c)
+{
+    return (c == 'N' || c == 'E' || c == 'W' || c == 'S');
+}
+
+bool check_line(char **tab, int y, bool last_line_non_empty)
+{
+    if (check_empty_line(tab[y]))
+        if (y != 0 && !last_line_non_empty)
+            return false;
+    return true;
+}
+
+bool is_map(char c)
+{
+    return (c == 'N' || c == 'E' || c == 'W' || c == 'S' || c == '0');
+}
+
+bool just_deal_line(char **tab, int y, int x, int count)
+{
+    if (y == 0 || y == count - 1 || x == 0 || x == strlen(tab[y]) - 1)
+        if (tab[y][x] == '0')
+            return false;
+    if (is_map(tab[y][x]) == true && check_around(tab, y, x, count) == false)
+        return false;
+    return true;
+}
+
+bool check_char(char c)
+{
+    return (c == '1' || c == 'N' || c == 'E' || c == 'W' || c == 'S' || c == '0' || c == '\n' || c == '\0');
+}
+
+bool check_tab(char **tab, t_data *game)
+{
+    int y = 0;
+    int x = 0;
+    bool last_line_non_empty = false;
     int count = 0;
-    while(1)
-    {
-        ptr = get_next_line(fd);
-        if(!ptr)
-            break;
+    while (tab[count])
         count++;
-    }
-	return(count);
-}
-
-int check_and_make_map(t_data *game, int new_fd)
-{
-    int i = 0;
-    while(1) //on recupere les lignes
+    while (tab[y])
     {
-        game->map.map[i] = ft_strdup(get_next_line(new_fd)); //on les copies
-        if(!game->map.map[i])
+        if (!tab[y][x] || check_line(tab, y, last_line_non_empty) == false)
+            return (printf("Erreur : ligne vide au milieu du tableau\n"), false);
+        while (tab[y][x])
         {
-            game->map.map[i] = NULL;
-            break;
+            if(is_dir(tab[y][x]) == true && game->joueur.dir != 0)
+                return(printf("already one game->joueur.dir %c\n", tab[y][x]), false);
+            else if(is_dir(tab[y][x]) == true && game->joueur.dir == 0)
+                game->joueur.dir = tab[y][x];
+            if (check_char(tab[y][x]) == false)
+                return (printf("Erreur : caractère invalide '%c' dans le tableau\n", tab[y][x]), false);
+            else if (just_deal_line(tab, y, x, count) == false)
+                return (printf("Erreur : case mal entourée ou bord mal formé !\n"), false);
+            x++;
         }
-		if(is_dir(letter_in_line(game, i)) == true)
-        {
-            if(game->joueur.dir != 0)
-                return(printf("Error !\nJust one position and direction please..."), 1);
-            game->joueur.dir = letter_in_line(game, i); // ici on recupere la direction
-            game->joueur.y = i+1; // ici en partie la position
-        }
-		else if(is_map(game->joueur.dir) == false && is_dir(game->joueur.dir) == false)
-			return(printf("Error !\nWrong letter in map [%c]...\n", game->joueur.dir), 1);//freetab(game->map.map, i - 1), 1);
-        i++;
+        last_line_non_empty = !check_empty_line(tab[y]);
+        x = 0;
+        y++;
     }
-    return(0);
+    if(game->joueur.dir == 0)
+        return(printf("Needs one player\n"), false);
+    return(true);
 }
 
-int get_map(int fd, char *tmp, t_data *game, int passed_lines)
-{
-    int count = 0;
-    int map_size;
-    int new_fd;
-
-    map_size = get_passed_lines(fd);
-	game->map.map = malloc(sizeof(char *) *  (map_size + 2)); //avec le fd actuel on va aller a bout du fichier pour allouer 
-	new_fd = open(game->file_name, O_RDONLY); //ave le nouveau fd on va revenir sur les lignes deja passees pour aller a celles quon a pas copiees
-	while(passed_lines > 1) // ici on passe les lignes dont on a pas besoin...
-	{
-		get_next_line(new_fd);
-		passed_lines--;
-	}
-    if(check_and_make_map(game, new_fd) == 1)
-        return(1);
-    return(0);
-}
-
-int catch_texture(int fd, t_data *game)
-{
-	int count = 0;
-	int check = 0;
-    char *line = get_next_line(fd);
-    while (line)
-    {
-        count++;
-        if (parse_line(line) != 0) //checker si cest une ligne qui pourrait etre une ligne de texture
-        {
-            if(check_text(line, game) == -1) // si oui on va checker les textures
-				return(-1); // si probleme dans les textures retourner -1 si tableau vide ou autre
-        }
-        else
-        {
-            if(all_inited(game) == true && line_not_empty(line) == true) // si toutes les textures ont etees initiees
-                return(get_map(fd, line, game, count)); // on recupere la map
-        }
-        line = get_next_line(fd);
-    }
-    return (1);
-}

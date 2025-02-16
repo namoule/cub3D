@@ -6,7 +6,7 @@
 /*   By: jealefev <jealefev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 18:22:07 by jealefev          #+#    #+#             */
-/*   Updated: 2025/02/12 19:23:00 by jealefev         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:35:16 by jealefev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool check_char(char **map, int y, int x)
         return(printf("b\n"), false);
     if(map[y-1][x] == '\0' || map[y-1][x] == ' ' || map[y-1][x] == '\0')
         return(printf("c\n"), false);
-    if(map[y+1][x] == ' ' || map[y+1][x] == '\0')
+    if(map[y+1] && (map[y+1][x] == ' ' || map[y+1][x] == '\0'))
         return(printf("d\n"), false);
     return(true);
 }
